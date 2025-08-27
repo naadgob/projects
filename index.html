@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Calc2</title>
 <style>
   body {
-    background-color: rgb(1, 2, 37);
+    background-color: rgb(19, 36, 62);
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
   }
@@ -181,7 +182,7 @@
     z-index: -2;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    translate: -50% -50%;
     z-index: -1;
     padding: 3px;
     border-radius: 25px;
@@ -192,7 +193,76 @@
     filter: blur(1.5rem);
     opacity: 0.7;
   }
-   
+ 
+  @keyframes spin {
+    from{ --angle: 0deg }
+    to  { --angle:360deg }
+  }
+
+  /* ========== MOBILE-ONLY OVERRIDES (только для телефонов) ========== */
+  /* меняются только размеры/шрифты/отступы; на десктопе все, как у тебя было */
+  @media (max-width: 700px) {
+    /* сделаем обёртку чуть меньше, чтобы кальк растянулся по ширине */
+    .wrapper {
+      padding: 10px;
+      align-items: stretch;
+    }
+
+    /* увеличиваем корпус — займёт почти всю ширину экрана */
+    .calc {
+      width: calc(100vw - 20px);
+      grid-template-columns: repeat(4, minmax(64px, 1fr)); /* больше кнопки */
+      grid-template-rows: 120px repeat(4, minmax(72px, 1fr));
+      gap: 8px;
+      padding: 14px;
+      border-radius: 14px;
+      bottom: 0; /* чтобы не "подбрасывало" на маленьких экранах */
+    }
+
+    .display {
+      padding: 16px;
+      font-size: 2.6rem; /* крупнее цифры */
+      min-height: 96px;
+      border-radius: 12px;
+    }
+
+    .display .value {
+      max-width: 92%;
+      font-size: inherit;
+    }
+
+    button {
+      font-size: 1.8rem; /* крупнее текста на кнопках */
+      border-radius: 12px;
+      height: 100%;
+      min-height: 72px;
+    }
+
+    /* ширина кнопки Delete — делаем побольше и по центру */
+    #delete {
+      width: calc(100vw - 40px);
+      max-width: none;
+      height: 64px;
+      font-size: 1.6rem;
+      border-radius: 14px;
+      margin-bottom: 8px;
+    }
+  }
+
+  /* ещё чуть крупнее для совсем мелких экранов */
+  @media (max-width: 420px) {
+    .calc {
+      grid-template-columns: repeat(4, minmax(72px, 1fr));
+      grid-template-rows: 140px repeat(4, minmax(84px, 1fr));
+      gap: 10px;
+      padding: 12px;
+    }
+
+    .display { font-size: 3rem; min-height: 110px; padding: 18px; }
+    button { font-size: 2rem; min-height: 80px; }
+    #delete { height: 72px; font-size: 1.7rem; width: calc(100vw - 36px); }
+  }
+  /* ========== END MOBILE OVERRIDES ========== */
 
 </style>
 </head>
@@ -279,6 +349,7 @@
             return;
           }
         }
+    
         if (valueElem.textContent === "0" || valueElem.textContent === "Error") {
           valueElem.textContent = btn_val;
          } else {
@@ -287,10 +358,10 @@
           }
         if (btn_val === "Delete") {
           valueElem.textContent = current.slice(0, -1);
-          }
+        }
+        
         });
       });  
   </script>
 </body>
 </html>
-
