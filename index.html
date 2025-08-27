@@ -6,7 +6,7 @@
 <title>Calc2</title>
 <style>
   body {
-    background-color: rgb(19, 36, 62);
+    background-color: rgb(1, 2, 37);
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
   }
@@ -208,21 +208,21 @@
       align-items: stretch;
     }
 
-    /* увеличиваем корпус — займёт почти всю ширину экрана */
+    /* увеличиваем корпус — займёт почти всю ширину экрана, но не так близко */
     .calc {
-      width: calc(100vw - 20px);
-      grid-template-columns: repeat(4, minmax(64px, 1fr)); /* больше кнопки */
-      grid-template-rows: 120px repeat(4, minmax(72px, 1fr));
-      gap: 8px;
-      padding: 14px;
+      width: calc(100vw - 40px);              /* чуть больше отступ слева/справа */
+      grid-template-columns: repeat(4, minmax(56px, 1fr)); /* немного меньше кнопки */
+      grid-template-rows: 110px repeat(4, minmax(64px, 1fr));
+      gap: 6px;
+      padding: 12px;
       border-radius: 14px;
       bottom: 0; /* чтобы не "подбрасывало" на маленьких экранах */
     }
 
     .display {
-      padding: 16px;
-      font-size: 2.6rem; /* крупнее цифры */
-      min-height: 96px;
+      padding: 14px;
+      font-size: 2.3rem; /* убрал часть увеличения */
+      min-height: 86px;
       border-radius: 12px;
     }
 
@@ -232,35 +232,36 @@
     }
 
     button {
-      font-size: 1.8rem; /* крупнее текста на кнопках */
+      font-size: 1.6rem; /* чуть поменьше */
       border-radius: 12px;
       height: 100%;
-      min-height: 72px;
+      min-height: 64px;
     }
 
-    /* ширина кнопки Delete — делаем побольше и по центру */
+    /* ширина кнопки Delete — делаем побольше, но с бОльшими отступами */
     #delete {
-      width: calc(100vw - 40px);
+      width: calc(100vw - 48px);
       max-width: none;
-      height: 64px;
-      font-size: 1.6rem;
+      height: 60px;
+      font-size: 1.5rem;
       border-radius: 14px;
       margin-bottom: 8px;
     }
   }
 
-  /* ещё чуть крупнее для совсем мелких экранов */
+  /* ещё чуть крупнее для совсем мелких экранов, но отодвинул обратно */
   @media (max-width: 420px) {
     .calc {
-      grid-template-columns: repeat(4, minmax(72px, 1fr));
-      grid-template-rows: 140px repeat(4, minmax(84px, 1fr));
-      gap: 10px;
-      padding: 12px;
+      grid-template-columns: repeat(4, minmax(64px, 1fr));
+      grid-template-rows: 128px repeat(4, minmax(76px, 1fr));
+      gap: 8px;
+      padding: 10px;
+      width: calc(100vw - 44px);
     }
 
-    .display { font-size: 3rem; min-height: 110px; padding: 18px; }
-    button { font-size: 2rem; min-height: 80px; }
-    #delete { height: 72px; font-size: 1.7rem; width: calc(100vw - 36px); }
+    .display { font-size: 2.6rem; min-height: 96px; padding: 14px; }
+    button { font-size: 1.8rem; min-height: 72px; }
+    #delete { height: 64px; font-size: 1.5rem; width: calc(100vw - 44px); }
   }
   /* ========== END MOBILE OVERRIDES ========== */
 
@@ -299,8 +300,6 @@
     </div>
   
     <script>
-    document.addEventListener('touchstart', function(){}, {passive: true});
-
     const buttons = document.querySelectorAll("button");
     const valueElem = document.querySelector(".display .value");
 
