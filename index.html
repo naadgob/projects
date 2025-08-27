@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Calc1 — Mobile slight pullback</title>
+<title>Calc2</title>
 <style>
   body {
     background-color: rgb(13, 15, 58);
@@ -30,6 +30,7 @@
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6);
     overflow: visible;
+    
   }
   
   .display {
@@ -50,16 +51,17 @@
 
   .display .value {
     position: relative;
-    z-index: 5;
+    z-index: 5;                 /* важное — держим текст поверх псевдоэлементов */
     pointer-events: none;
     text-shadow: 0 1px 2px rgba(0,0,0,0.8); 
     display: inline-block;
     white-space: nowrap;
-    max-width: 28ch;
+    max-width: 28ch;            /* чтобы длинные числа не ломали верстку */
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
+  /* псевдоэлементы градиентов (чтобы цвета плавно менялись) */
   .display::before, .display::after {
     content: "";
     position: absolute;
@@ -106,7 +108,7 @@
     position: absolute;
     inset: -3px;          
     background-image: conic-gradient(from var(--angle), rgb(255, 0, 217), rgb(255, 0, 238), rgb(174, 0, 255), rgb(174, 0, 255), rgb(38, 0, 255), rgb(0, 17, 255), rgb(0, 98, 255), rgb(255, 0, 217));
-    z-index: -2;
+    z-index: -2; /* чтобы точно быть позади корпуса */
     pointer-events: none;
     border-radius: 15px;
     animation: 7s spin linear infinite;
@@ -165,17 +167,17 @@
     width: 100%;
     background-image: conic-gradient(
       from var(--angle),
-      rgb(255, 0, 217),
+      rgb(255, 0, 217),  /* розовый край */
       rgb(255, 0, 238),
       rgb(174, 0, 255),
       rgb(200, 0, 255),
       rgb(212, 0, 255),
-      rgb(153, 0, 255),
+      rgb(153, 0, 255),   /* глубокий синий центр */
       rgb(212, 60, 255),
       rgb(200, 0, 255),
       rgb(174, 0, 255),
       rgb(255, 0, 238),
-      rgb(255, 0, 217)
+      rgb(255, 0, 217)   /* розовый край */
     );
     z-index: -2;
     top: 50%;
@@ -198,9 +200,8 @@
   }
 
   /* ========== MOBILE-ONLY OVERRIDES (только для телефонов) ========== */
-  /* Меняем только размеры/положение Delete; НЕ растягиваем калькулятор */
-  @media (max-width: 700px) {
-    .wrapper {
+  /* меняются только размеры/шрифты/отступы; на десктопе все, как у тебя было */
+ .wrapper {
       padding: 14px;
       align-items: center; /* не растягиваем, держим центр */
     }
@@ -249,7 +250,7 @@
       margin-left: auto;
       margin-right: auto;
     }
-  }
+  
 
   /* для очень узких экранов — чуть уменьшаем, но тоже не растягиваем */
   @media (max-width: 420px) {
@@ -267,45 +268,103 @@
   }
   /* ========== END MOBILE OVERRIDES ========== */
 
+
 </style>
 </head>
 
 <body>
+  
+  
   <div class="wrapper">    
     <button id="delete">Delete</button>
-
     <div class="calc">
       <div class="display"><span class="value">0</span></div>
-
+      
+      
       <button id="btn-7">7</button>
       <button id="btn-8">8</button>
       <button id="btn-9">9</button>
       <button>/</button>
-
+      
       <button id="btn-4">4</button>
       <button id="btn-5">5</button>
       <button id="btn-6">6</button>
       <button>*</button>
-
+      
       <button id="btn-1">1</button>
       <button id="btn-2">2</button>
       <button id="btn-3">3</button>
       <button>-</button>
-
+      
       <button id="btn-0">0</button>
       <button id="btn-dot">.</button>
       <button>=</button>
       <button>+</button>
+      </div>
     </div>
-  </div>
-
-  <script>
+  
+    <script>
     const buttons = document.querySelectorAll("button");
     const valueElem = document.querySelector(".display .value");
 
     const operators = ["+", "-", "*", "/", "."];
 
     function showError() {
-      val
+      valueElem.textContent = "Error";
+      setTimeout(() => {
+      valueElem.textContent = ""; 
+      }, 1500); 
+    }
 
 
+    function calculate() {
+      let expr = valueElem.textContent;
+
+      if (expr.trim() === "") {
+        showError();
+        return;
+      }
+
+      if (/\/0(?!\d)/.test(expr)) {
+        showError();
+        return;
+      }
+
+      try {
+        let result = eval(expr);
+        valueElem.textContent = parseFloat(result.toFixed(10));
+      } catch {
+        valueElem.textContent = "Error";
+      }
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const btn_val = btn.textContent.trim();
+        let current = valueElem.textContent;
+
+        if (btn_val === "=") {
+          calculate();
+        } else {
+        if (operators.includes(btn_val)) {
+          let lastChar = current.slice(-1);
+          if (operators.includes(lastChar)) {
+            return;
+          }
+        }
+    
+        if (valueElem.textContent === "0" || valueElem.textContent === "Error") {
+          valueElem.textContent = btn_val;
+         } else {
+             valueElem.textContent += btn_val;
+            }
+          }
+        if (btn_val === "Delete") {
+          valueElem.textContent = current.slice(0, -1);
+        }
+        
+        });
+      });  
+  </script>
+</body>
+</html>
