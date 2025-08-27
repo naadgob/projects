@@ -116,7 +116,7 @@
 
   .calc::before {
     filter: blur(1.5rem);
-    opacity: 0.5;
+    opacity: 0.7;
   }
   @keyframes spin {
     from{ --angle: 0deg }
@@ -155,7 +155,7 @@
     font-size: 2rem;
     width: 23rem;
     height: 6rem;
-    border-radius: 25px;
+    border-radius: 18px;
     background: linear-gradient(to top, rgb(76, 3, 171), rgb(55, 0, 255));
     border: none;
   }
@@ -185,7 +185,7 @@
     translate: -50% -50%;
     z-index: -1;
     padding: 3px;
-    border-radius: 25px;
+    border-radius: 18px;
     animation: 7s spin linear infinite;
   }
 
@@ -204,64 +204,64 @@
   @media (max-width: 700px) {
     /* сделаем обёртку чуть меньше, чтобы кальк растянулся по ширине */
     .wrapper {
-      padding: 10px;
+      padding: 12px;
       align-items: stretch;
     }
 
-    /* увеличиваем корпус — займёт почти всю ширину экрана, но не так близко */
+    /* увеличиваем корпус — займёт почти всю ширину экрана, но оставил больше боковых отступов */
     .calc {
-      width: calc(100vw - 40px);              /* чуть больше отступ слева/справа */
-      grid-template-columns: repeat(4, minmax(56px, 1fr)); /* немного меньше кнопки */
-      grid-template-rows: 110px repeat(4, minmax(64px, 1fr));
-      gap: 6px;
+      width: calc(100vw - 64px);              /* больше отступ слева/справа — отодвинул */
+      grid-template-columns: repeat(4, minmax(52px, 1fr)); /* чуть поменьше кнопки */
+      grid-template-rows: 106px repeat(4, minmax(60px, 1fr));
+      gap: 7px;
       padding: 12px;
       border-radius: 14px;
-      bottom: 0; /* чтобы не "подбрасывало" на маленьких экранах */
+      bottom: 0;
     }
 
     .display {
-      padding: 14px;
-      font-size: 2.3rem; /* убрал часть увеличения */
-      min-height: 86px;
+      padding: 12px;
+      font-size: 2.1rem; /* чуть поменьше цифр */
+      min-height: 80px;
       border-radius: 12px;
     }
 
     .display .value {
-      max-width: 92%;
+      max-width: 90%;
       font-size: inherit;
     }
 
     button {
-      font-size: 1.6rem; /* чуть поменьше */
+      font-size: 1.55rem; /* чуть поменьше текста на кнопках */
       border-radius: 12px;
       height: 100%;
-      min-height: 64px;
+      min-height: 62px;
     }
 
-    /* ширина кнопки Delete — делаем побольше, но с бОльшими отступами */
+    /* ширина кнопки Delete — делаем побольше отступы по сторонам */
     #delete {
-      width: calc(100vw - 48px);
+      width: calc(100vw - 80px);
       max-width: none;
-      height: 60px;
-      font-size: 1.5rem;
+      height: 58px;
+      font-size: 1.45rem;
       border-radius: 14px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
   }
 
-  /* ещё чуть крупнее для совсем мелких экранов, но отодвинул обратно */
+  /* ещё чуть крупнее для совсем мелких экранов, но с отступом */
   @media (max-width: 420px) {
     .calc {
-      grid-template-columns: repeat(4, minmax(64px, 1fr));
-      grid-template-rows: 128px repeat(4, minmax(76px, 1fr));
+      grid-template-columns: repeat(4, minmax(56px, 1fr));
+      grid-template-rows: 120px repeat(4, minmax(68px, 1fr));
       gap: 8px;
       padding: 10px;
-      width: calc(100vw - 44px);
+      width: calc(100vw - 64px);
     }
 
-    .display { font-size: 2.6rem; min-height: 96px; padding: 14px; }
-    button { font-size: 1.8rem; min-height: 72px; }
-    #delete { height: 64px; font-size: 1.5rem; width: calc(100vw - 44px); }
+    .display { font-size: 2.4rem; min-height: 88px; padding: 12px; }
+    button { font-size: 1.7rem; min-height: 68px; }
+    #delete { height: 60px; font-size: 1.45rem; width: calc(100vw - 72px); }
   }
   /* ========== END MOBILE OVERRIDES ========== */
 
