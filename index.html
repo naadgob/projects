@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Calc2</title>
+<title>Calc1 — Mobile slight pullback</title>
 <style>
   body {
-    background-color: rgb(1, 2, 37);
+    background-color: rgb(13, 15, 58);
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
   }
@@ -30,7 +30,6 @@
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.6);
     overflow: visible;
-    
   }
   
   .display {
@@ -51,17 +50,16 @@
 
   .display .value {
     position: relative;
-    z-index: 5;                 /* важное — держим текст поверх псевдоэлементов */
+    z-index: 5;
     pointer-events: none;
     text-shadow: 0 1px 2px rgba(0,0,0,0.8); 
     display: inline-block;
     white-space: nowrap;
-    max-width: 28ch;            /* чтобы длинные числа не ломали верстку */
+    max-width: 28ch;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
-  /* псевдоэлементы градиентов (чтобы цвета плавно менялись) */
   .display::before, .display::after {
     content: "";
     position: absolute;
@@ -108,7 +106,7 @@
     position: absolute;
     inset: -3px;          
     background-image: conic-gradient(from var(--angle), rgb(255, 0, 217), rgb(255, 0, 238), rgb(174, 0, 255), rgb(174, 0, 255), rgb(38, 0, 255), rgb(0, 17, 255), rgb(0, 98, 255), rgb(255, 0, 217));
-    z-index: -2; /* чтобы точно быть позади корпуса */
+    z-index: -2;
     pointer-events: none;
     border-radius: 15px;
     animation: 7s spin linear infinite;
@@ -167,17 +165,17 @@
     width: 100%;
     background-image: conic-gradient(
       from var(--angle),
-      rgb(255, 0, 217),  /* розовый край */
+      rgb(255, 0, 217),
       rgb(255, 0, 238),
       rgb(174, 0, 255),
       rgb(200, 0, 255),
       rgb(212, 0, 255),
-      rgb(153, 0, 255),   /* глубокий синий центр */
+      rgb(153, 0, 255),
       rgb(212, 60, 255),
       rgb(200, 0, 255),
       rgb(174, 0, 255),
       rgb(255, 0, 238),
-      rgb(255, 0, 217)   /* розовый край */
+      rgb(255, 0, 217)
     );
     z-index: -2;
     top: 50%;
@@ -200,29 +198,30 @@
   }
 
   /* ========== MOBILE-ONLY OVERRIDES (только для телефонов) ========== */
-  /* меняются только размеры/шрифты/отступы; на десктопе все, как у тебя было */
+  /* Меняем только размеры/положение Delete; НЕ растягиваем калькулятор */
   @media (max-width: 700px) {
-    /* сделаем обёртку чуть меньше, чтобы кальк растянулся по ширине */
     .wrapper {
-      padding: 12px;
-      align-items: stretch;
+      padding: 14px;
+      align-items: center; /* не растягиваем, держим центр */
     }
 
-    /* увеличиваем корпус — займёт почти всю ширину экрана, но оставил больше боковых отступов */
+    /* НЕ РАСТЯГИВАЕМ: сохраняем intrinsic width (max-content),
+       но делаем кнопки чуть крупнее за счёт фиксированных колонок */
     .calc {
-      width: calc(100vw - 64px);              /* больше отступ слева/справа — отодвинул */
-      grid-template-columns: repeat(4, minmax(52px, 1fr)); /* чуть поменьше кнопки */
-      grid-template-rows: 106px repeat(4, minmax(60px, 1fr));
-      gap: 7px;
+      width: max-content;                 /* keep intrinsic size, no full-width stretch */
+      grid-template-columns: repeat(4, 64px); /* чуть компактнее, но крупнее кнопки */
+      grid-template-rows: 100px repeat(4, 64px);
+      gap: 8px;
       padding: 12px;
       border-radius: 14px;
       bottom: 0;
+      justify-self: center;
     }
 
     .display {
       padding: 12px;
-      font-size: 2.1rem; /* чуть поменьше цифр */
-      min-height: 80px;
+      font-size: 2.05rem;
+      min-height: 78px;
       border-radius: 12px;
     }
 
@@ -232,36 +231,39 @@
     }
 
     button {
-      font-size: 1.55rem; /* чуть поменьше текста на кнопках */
+      font-size: 1.5rem;
       border-radius: 12px;
       height: 100%;
       min-height: 62px;
     }
 
-    /* ширина кнопки Delete — делаем побольше отступы по сторонам */
+    /* Delete — делаем компактнее и ближе к калькулятору (меньший margin-bottom) */
     #delete {
-      width: calc(100vw - 80px);
-      max-width: none;
-      height: 58px;
+      width: auto;                /* не тянем на всю ширину */
+      padding: 0 16px;
+      height: 56px;
       font-size: 1.45rem;
       border-radius: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 6px;        /* ближе к кальку */
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 
-  /* ещё чуть крупнее для совсем мелких экранов, но с отступом */
+  /* для очень узких экранов — чуть уменьшаем, но тоже не растягиваем */
   @media (max-width: 420px) {
     .calc {
-      grid-template-columns: repeat(4, minmax(56px, 1fr));
-      grid-template-rows: 120px repeat(4, minmax(68px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(4, 60px);
+      grid-template-rows: 112px repeat(4, 60px);
+      gap: 7px;
       padding: 10px;
-      width: calc(100vw - 64px);
+      width: max-content;
     }
 
-    .display { font-size: 2.4rem; min-height: 88px; padding: 12px; }
-    button { font-size: 1.7rem; min-height: 68px; }
-    #delete { height: 60px; font-size: 1.45rem; width: calc(100vw - 72px); }
+    .display { font-size: 2.2rem; min-height: 82px; padding: 10px; }
+    button { font-size: 1.45rem; min-height: 64px; }
+    #delete { height: 54px; font-size: 1.4rem; width: auto; margin-bottom: 6px; padding: 0 14px; }
   }
   /* ========== END MOBILE OVERRIDES ========== */
 
@@ -269,98 +271,39 @@
 </head>
 
 <body>
-  
-  
   <div class="wrapper">    
     <button id="delete">Delete</button>
+
     <div class="calc">
       <div class="display"><span class="value">0</span></div>
-      
-      
+
       <button id="btn-7">7</button>
       <button id="btn-8">8</button>
       <button id="btn-9">9</button>
       <button>/</button>
-      
+
       <button id="btn-4">4</button>
       <button id="btn-5">5</button>
       <button id="btn-6">6</button>
       <button>*</button>
-      
+
       <button id="btn-1">1</button>
       <button id="btn-2">2</button>
       <button id="btn-3">3</button>
       <button>-</button>
-      
+
       <button id="btn-0">0</button>
       <button id="btn-dot">.</button>
       <button>=</button>
       <button>+</button>
-      </div>
     </div>
-  
-    <script>
+  </div>
+
+  <script>
     const buttons = document.querySelectorAll("button");
     const valueElem = document.querySelector(".display .value");
 
     const operators = ["+", "-", "*", "/", "."];
 
     function showError() {
-      valueElem.textContent = "Error";
-      setTimeout(() => {
-      valueElem.textContent = ""; 
-      }, 1500); 
-    }
-
-
-    function calculate() {
-      let expr = valueElem.textContent;
-
-      if (expr.trim() === "") {
-        showError();
-        return;
-      }
-
-      if (/\/0(?!\d)/.test(expr)) {
-        showError();
-        return;
-      }
-
-      try {
-        let result = eval(expr);
-        valueElem.textContent = parseFloat(result.toFixed(10));
-      } catch {
-        valueElem.textContent = "Error";
-      }
-    }
-
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const btn_val = btn.textContent.trim();
-        let current = valueElem.textContent;
-
-        if (btn_val === "=") {
-          calculate();
-        } else {
-        if (operators.includes(btn_val)) {
-          let lastChar = current.slice(-1);
-          if (operators.includes(lastChar)) {
-            return;
-          }
-        }
-    
-        if (valueElem.textContent === "0" || valueElem.textContent === "Error") {
-          valueElem.textContent = btn_val;
-         } else {
-             valueElem.textContent += btn_val;
-            }
-          }
-        if (btn_val === "Delete") {
-          valueElem.textContent = current.slice(0, -1);
-        }
-        
-        });
-      });  
-  </script>
-</body>
-</html>
+      val
